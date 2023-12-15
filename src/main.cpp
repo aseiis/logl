@@ -1,7 +1,10 @@
-#include "../include/glad.h"
+#include <iostream>
+
+#include "../vendor/glad.h"
 #include <GLFW/glfw3.h>
 
-#include <iostream>
+#include "../headers/Shader.h"
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -9,23 +12,6 @@ void processInput(GLFWwindow *window);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-
-// shaders sources
-const char *vertexShaderSource = 
-"#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0); //gl_Position is the output of the vertex shader \n"
-"}\0"; // NULL (\0) terminated C-string
-
-const char* fragmentShaderSource = 
-"#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\0"; // NULL (\0) terminated C-string
 
 
 int main()
@@ -57,58 +43,13 @@ int main()
     // ============================================================================================================
 
     // Shaders
-    int success;
-    char infoLog[512];
-
-    // Vertex Shader
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);                //creating the shader
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);     //attaching the source
-    glCompileShader(vertexShader);                                  //compiling
-
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-    if(!success){
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR: Vertex shader compilation failed\n" << infoLog << std::endl;
-    }
-
-    // Fragment Shader
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-    if(!success){
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR: Fragment shader compilation failed\n" << infoLog << std::endl;
-    }
-
-    // Shader program
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if(!success){
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR: Shader program linking failed\n" << infoLog << std::endl;
-    }
-
-    glUseProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    Shader shader("shaders/shader.vert", "shaders/shader.frag");
 
     // =============================================================================================================
 
     // Data
     float vertices[] = {
-        //triangle 1
+        //for a rectangle
         -0.5f,  0.5f, 0.0f, //TOP LEFT
          0.5f,  0.5f, 0.0f, //TOP RIGHT
          0.5f, -0.5f, 0.0f, //BTM RIGHT
@@ -147,10 +88,8 @@ int main()
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 
-    glUseProgram(shaderProgram);
-
     // uncomment this call to draw in wireframe polygons.
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
 
     // render loop
@@ -163,6 +102,10 @@ int main()
         //clear
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        //shader
+        shader.use();
+        shader.setFloat("test", 1.0f);
 
         //draw
         glBindVertexArray(VAO);
@@ -177,7 +120,6 @@ int main()
     // optional: de-allocate all resources once they've outlived their purpose
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     glfwTerminate();

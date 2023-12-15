@@ -14,7 +14,7 @@ else()
 endif()
 
 
-add_executable(logl src/main.cpp src/glad.c)
+add_executable(logl src/main.cpp src/glad.c src/Shader.cpp)
 
 if(WIN32)
 	target_link_libraries(logl glfw3)
