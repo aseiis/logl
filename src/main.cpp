@@ -3,6 +3,7 @@
 #include "../vendor/glad.h"
 #include <GLFW/glfw3.h>
 
+#include "../headers/utils.h"
 #include "../headers/Shader.h"
 
 
@@ -14,7 +15,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 
-int main()
+int main(int argc, char** argv)
 {
     // glfw: initialize and configure
     glfwInit();
@@ -43,7 +44,9 @@ int main()
     // ============================================================================================================
 
     // Shaders
-    Shader shader("shaders/shader.vert", "shaders/shader.frag");
+    std::string vShaderPath = projectRootPath + "shaders/shader.vert";
+    std::string fShaderPath = projectRootPath + "shaders/shader.frag";
+    Shader shader(vShaderPath, fShaderPath);
 
     // =============================================================================================================
 

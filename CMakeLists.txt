@@ -13,8 +13,10 @@ else()
 	find_package(glfw3 3.3 REQUIRED)
 endif()
 
+# Set a preprocessor definition with the project root path
+add_definitions(-DPROJECT_ROOT_PATH="${CMAKE_SOURCE_DIR}/")
 
-add_executable(logl src/main.cpp src/glad.c src/Shader.cpp)
+add_executable(logl "src/main.cpp" "src/glad.c" "src/Shader.cpp" "headers/utils.h")
 
 if(WIN32)
 	target_link_libraries(logl glfw3)
