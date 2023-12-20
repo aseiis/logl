@@ -72,7 +72,7 @@ Shader::Shader(std::string vertexPath, std::string fragmentPath)
 Shader::~Shader()
 {
 	//is telling OpenGL do delete it explicitely is needed?
-	glDeleteProgram(ID);
+	//glDeleteProgram(ID);
 }
 
 void Shader::use()
