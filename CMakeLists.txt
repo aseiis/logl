@@ -16,7 +16,7 @@ endif()
 # Set a preprocessor definition with the project root path
 add_definitions(-DPROJECT_ROOT_PATH="${CMAKE_SOURCE_DIR}/")
 
-add_executable(logl "src/main.cpp" "src/glad.c" "src/Shader.cpp" "headers/utils.h")
+add_executable(logl "src/main.cpp" "src/glad.c" "src/Shader.cpp" "headers/utils.h" "vendor/stb_image.h" "vendor/stb_image_implementation.cpp" "headers/Texture.h" "src/Texture.cpp")
 
 if(WIN32)
 	target_link_libraries(logl glfw3)

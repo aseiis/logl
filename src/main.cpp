@@ -51,13 +51,21 @@ int main(int argc, char** argv)
     // =============================================================================================================
 
     // Data
-    float vertices[] = {
-        // POSITIONS          // COLORS
+    //float vertices[] = {
+    //    // POSITIONS          // COLORS
 
-        //for a triangle
-         0.0f,  0.5f,  0.0f,  0.0f,  0.0f,  1.0f,   //TOP
-         0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,    //BTM RIGHT
-        -0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  0.0f    //BTM LEFT
+    //    //for a triangle
+    //     0.0f,  0.5f,  0.0f,  0.0f,  0.0f,  1.0f,   //TOP
+    //     0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,    //BTM RIGHT
+    //    -0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  0.0f    //BTM LEFT
+    //};
+
+    float vertices[] = {
+        // positions          // colors           // texture coords
+         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
     };
 
     unsigned int indices[] = {
@@ -80,10 +88,13 @@ int main(int argc, char** argv)
     // color attribute
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    //texture attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
     
     unsigned int EBO;
     glGenBuffers(1, &EBO);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
