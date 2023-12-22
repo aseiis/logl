@@ -75,6 +75,11 @@ Shader::~Shader()
 	//glDeleteProgram(ID);
 }
 
+int Shader::GetID()
+{
+	return this->ID;
+}
+
 void Shader::use()
 {
 	glUseProgram(ID);

@@ -5,6 +5,7 @@
 
 #include "../headers/utils.h"
 #include "../headers/Shader.h"
+#include "../headers/Texture.h"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -69,7 +70,8 @@ int main(int argc, char** argv)
     };
 
     unsigned int indices[] = {
-        2, 1, 0
+        0, 1, 3, 
+        1, 2, 3
     };
 
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
@@ -82,11 +84,11 @@ int main(int argc, char** argv)
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     //texture attribute
@@ -98,16 +100,21 @@ int main(int argc, char** argv)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    std::string wallTexturePath = projectRootPath + "assets/textures/wall.jpg";
+    Texture wallTexture = Texture(wallTexturePath, 512, 512, 3);
+
+    shader.use();
+    glUniform1i(glGetUniformLocation(shader.GetID(), "fragTexture"), 0);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-    glBindVertexArray(0);
+//    glBindVertexArray(0);
 
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -124,17 +131,20 @@ int main(int argc, char** argv)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //shader
-        shader.use();
-        // shader.setFloat("test", 1.0f);
-
         float timeValue = glfwGetTime();
         // can be used with shader stuff for animations
         // ...
 
         //draw
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, wallTexture.GetID());
+
+        //shader
+        shader.use();
+        // shader.setFloat("test", 1.0f);
+
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -145,6 +155,7 @@ int main(int argc, char** argv)
     // optional: de-allocate all resources once they've outlived their purpose
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     glfwTerminate();

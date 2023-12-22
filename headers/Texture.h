@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../vendor/glad.h">
+#include "../vendor/glad.h"
 
 #include <string>
 #include <iostream>
@@ -11,8 +11,9 @@ class Texture
 {
 public:
 	Texture();
-	Texture(std::string path, int width, int height, int nbChannels);
+	Texture(const std::string& path, int width, int height, int nbChannels);
 	bool LoadData(std::string path, int width, int height, int nbChannels);
+	int GetID();
 
 private:
 	unsigned int ID;
