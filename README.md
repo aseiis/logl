@@ -6,24 +6,21 @@ The code follows the tutorial at https://learnopengl.com/
 
 ### Linux
 
-Make sure to have at least the following packages installed (Debian-based, Ubuntu...): <br/>
-<code>
+Make sure to have at least the following packages installed (Debian-based, Ubuntu...): 
+```
 apt update
-</code>
-<br/>
-<code>
 apt install libglfw3 libglfw3-dev
-</code>
+```
 
 For Fedora, Arch and other distros, check the packages for GLFW3.
 
 Depending on your system, you might need/want to install Mesa which is an open-source implementation of OpenGL.
 
-To build and run the project, just run the minimal script provided: <br/> <code>./buildandrun.sh</code>
+To build and run the project, just run the minimal script provided: ```./buildandrun.sh```
 
 ### Windows
 
-On Windows, Visual Studio si recommanded as it is very common in the industry for graphics prog. Remember to install the extension for CMake.
+On Windows, **Visual Studio** si recommanded as it is very common in the industry for graphics prog. Remember to install the extension for **CMake**.
 
 You need to install the **GLFW3 library** and set the directory path to a ***new environnement variable*** <code>GLFW_DIR</code> that you'll create. You can find source code or even binaries there: https://www.glfw.org/download.
 
@@ -32,4 +29,4 @@ You need to install the **GLFW3 library** and set the directory path to a ***new
 
 ### Note on GLAD dependency
 
-GLAD is a OpenGL loader that prepare all the encessary OpenGL functions we need. We use a single header file glad.h (along with khrplatform.h) that is dependent of the GLFW version we're using. Depending of the version, you might need to replace the GLAD header file with a different one that you'll find there: https://glad.dav1d.de/
+***GLAD*** is an **OpenGL loader** that prepare all the encessary OpenGL functions we need. We use a **single header file glad.h** (along with khrplatform.h) that is **dependent of the GLFW version** we're using. Depending of the version, you might need to replace the GLAD header file with a different one that you'll find there: https://glad.dav1d.de/
