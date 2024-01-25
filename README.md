@@ -27,6 +27,8 @@ You need to install the **GLFW3 library** and set the directory path to a ***new
 **IMPORTANT:** <br/>
 **The CMake file is configured to use an environnement variable nammed <code>GLFW_DIR</code> that you *MUST* set to the path of the directory where GLFW3 is installed. It'll automatically extract the include files as well as the lib.**
 
+If the CMake generation behave erratically, try to delete the cache and re-run CMake generation with "Project" > "Delete Cache and Reconfigure".
+
 ### Note on GLAD dependency
 
 ***GLAD*** is an **OpenGL loader** that prepare all the encessary OpenGL functions we need. We use a **single header file glad.h** (along with khrplatform.h) that is **dependent of the GLFW version** we're using. Depending of the version, you might need to replace the GLAD header file with a different one that you'll find there: https://glad.dav1d.de/
